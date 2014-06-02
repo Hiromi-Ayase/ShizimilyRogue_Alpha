@@ -81,6 +81,7 @@ window.onload = function () {
                 var unit = dungeon.units[i];
                 var x = unit.cell.coord.x * OBJECT_WIDTH;
                 var y = unit.cell.coord.y * OBJECT_HEIGHT;
+
                 unit.sprite.tl.moveTo(x, y, 10);
             }
             var coord = dungeon.player.cell.coord;
