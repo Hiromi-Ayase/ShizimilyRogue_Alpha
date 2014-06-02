@@ -1,24 +1,31 @@
-﻿var Ignore = function () {
+﻿var EnemyStatus = function () {
+    this.lv = 1;
+};
+
+var Ignore = function () {
     this.lastDir = null;
+    this.cell = null;
+    
     this.act = function () {
-        // ランダムに動く方向を決定
-        var dir = dungeon.floor.movable(this);
-        for (var i = 0; i < dir.length; i++) {
-            if (dir[i] == this.lastDir) {
-                dir.push(dir[i]);
-                dir.push(dir[i]);
-                dir.push(dir[i]);
-                dir.push(dir[i]);
-                dir.push(dir[i]);
-                break;
-            }
-        }
-        if (dir.length == 0) {
-            return;
-        }
-        var index = Math.floor(ROT.RNG.getUniform() * dir.length);
-        this.lastDir = dir[index];
-        if (dungeon.floor.moveObject(this, dir[index]) == false) {
+        var playerCoord = dungeon.player.cell.coord;
+        var thisCoord = this.cell.coord;
+
+        var pathFinder = new ROT.Path.AStar(playerCoord.x, playerCoord.y, function (x, y, dir) {
+            if (x + dir[0] == thisCoord.x && y + dir[1] == thisCoord.y)
+                return true;
+
+            var coord = dungeon.floor.getCell(x, y, thisCoord.layer).coord;
+            var ret = dungeon.floor.isMovable(coord, dir);
+            return ret;
+        });
+
+        var dir = null;
+        pathFinder.compute(thisCoord.x, thisCoord.y, function (x, y) {
+            if (dir == null && (x != thisCoord.x || y != thisCoord.y))
+                dir = [x - thisCoord.x, y - thisCoord.y];
+        });
+       
+        if (dungeon.floor.moveObject(this, dir) == false) {
             return;
         }
     };

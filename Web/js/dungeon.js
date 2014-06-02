@@ -60,25 +60,38 @@ var Dungeon = function () {
             return this.getIndex(this.width - 1, this.height - 1, LAYER_FLOOR)
         };
 
-        this.movable = function (obj) {
+        // セルを取得
+        this.getCell = function (x, y, layer) {
+            return this.map[this.getIndex(x, y, layer)];
+        };
+
+        // 移動できるかどうか
+        this.isMovable = function (coord, dir) {
+            var newCell = this.map[this.getIndex(coord.x + dir[0], coord.y + dir[1], coord.layer)];
+
+            if (dir[0] == 0 || dir[1] == 0) {
+                if (newCell.object == null)
+                    return true;
+            } else {
+                var cornerCell1 = this.map[this.getIndex(coord.x + dir[0], coord.y, coord.layer)];
+                var cornerCell2 = this.map[this.getIndex(coord.x, coord.y + dir[1], coord.layer)];
+                if (newCell.object == null
+                    && (cornerCell1.object == null || cornerCell1.object.corner == false)
+                    && (cornerCell2.object == null || cornerCell2.object.corner == false)) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        // 移動可能な近隣の方向を取得
+        this.getMovableDirs = function (obj) {
             var coord = obj.cell.coord;
             var result = [];
             for (var i = 0; i < ROT.DIRS[8].length; i++) {
                 var dir = ROT.DIRS[8][i];
-                var newCell = this.map[this.getIndex(coord.x + dir[0], coord.y + dir[1], coord.layer)];
-
-                if (dir[0] == 0 || dir[1] == 0) {
-                    if (newCell.object == null)
-                        result.push(dir);
-                } else {
-                    var cornerCell1 = this.map[this.getIndex(coord.x + dir[0], coord.y, coord.layer)];
-                    var cornerCell2 = this.map[this.getIndex(coord.x, coord.y + dir[1], coord.layer)];
-                    if (newCell.object == null
-                        && (cornerCell1.object == null || cornerCell1.object.corner == false)
-                        && (cornerCell2.object == null || cornerCell2.object.corner == false)) {
-                        result.push(dir);
-                    }
-                }
+                if (this.isMovable(coord, dir))
+                    result.push(dir);
             }
             return result;
         };

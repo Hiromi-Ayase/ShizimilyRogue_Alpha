@@ -26,7 +26,4 @@ var HEIGHT = 20;
 var OBJECT_WIDTH = 64;
 var OBJECT_HEIGHT = 64;
 
-
-var tets;
-
-     
+ROT.RNG.setSeed(2);

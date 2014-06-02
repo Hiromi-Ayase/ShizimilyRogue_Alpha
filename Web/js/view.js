@@ -1,8 +1,7 @@
 ﻿
-
 window.onload = function () {
     enchant();
-    var view = new Game(640, 480);
+    var view = new Game(1640, 1480);
     view.preload("map.png", "unit.png", "windowmessage.png");
     view.fps = 30;
 
