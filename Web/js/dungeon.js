@@ -66,16 +66,16 @@ var Dungeon = function () {
         };
 
         // 移動できるかどうか
-        this.isMovable = function (coord, dir) {
+        this.isMovable = function (obj, coord, dir) {
             var newCell = this.map[this.getIndex(coord.x + dir[0], coord.y + dir[1], coord.layer)];
 
             if (dir[0] == 0 || dir[1] == 0) {
-                if (newCell.object == null)
+                if (newCell.object == null || newCell.object == obj)
                     return true;
             } else {
                 var cornerCell1 = this.map[this.getIndex(coord.x + dir[0], coord.y, coord.layer)];
                 var cornerCell2 = this.map[this.getIndex(coord.x, coord.y + dir[1], coord.layer)];
-                if (newCell.object == null
+                if ((newCell.object == null || newCell.object == obj)
                     && (cornerCell1.object == null || cornerCell1.object.corner == false)
                     && (cornerCell2.object == null || cornerCell2.object.corner == false)) {
                     return true;

@@ -19,11 +19,11 @@ var LAYER_EFFECT = 3;
 var WALL_HEIGHT = 3;
 
 // ダンジョンの論理サイズ
-var WIDTH = 20;
-var HEIGHT = 20;
+var WIDTH =25;
+var HEIGHT = 25;
 
 // ブロックの物理サイズ（ピクセル)
 var OBJECT_WIDTH = 64;
 var OBJECT_HEIGHT = 64;
 
-ROT.RNG.setSeed(2);
+//ROT.RNG.setSeed(2);
