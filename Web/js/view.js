@@ -64,7 +64,7 @@
 
     return map;
 };
-// いぐのあほー
+
 var wallImg = "wall_01.png";
 window.onload = function () {
     enchant();
